@@ -113,10 +113,10 @@ jobs:
 
           - name: 🔨 Build Smelter image
             run: |
-              docker buildx build --platform linux/amd64 -t ghcr.io/software-mansion/smelter:${{ github.sha }} -f build_tools/docker/slim.Dockerfile .
+              docker buildx build --platform linux/amd64 -t ghcr.io/noituri/smelter:${{ github.sha }} -f build_tools/docker/slim.Dockerfile .
 
           - name: 📤  Upload image
-            run: docker push ghcr.io/software-mansion/smelter:${{ github.sha }}
+            run: docker push ghcr.io/noituri/smelter:${{ github.sha }}
 
     docker-arm64:
       needs: docker-amd64
@@ -131,26 +131,26 @@ jobs:
 
           - name: 🎣 Pull Smleter AMD64 image
             run: |
-              docker pull ghcr.io/software-mansion/smelter:${{ github.sha }}
-              echo "AMD64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/software-mansion/smelter:${{ github.sha }})" >> "$GITHUB_ENV"
+              docker pull ghcr.io/noituri/smelter:${{ github.sha }}
+              echo "AMD64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/noituri/smelter:${{ github.sha }})" >> "$GITHUB_ENV"
 
           - name: 🔨 Build Smelter ARM64 image
             run: |
-              docker buildx build --platform linux/arm64 -t ghcr.io/software-mansion/smelter:${{ github.sha }} -f build_tools/docker/slim.Dockerfile .
+              docker buildx build --platform linux/arm64 -t ghcr.io/noituri/smelter:${{ github.sha }} -f build_tools/docker/slim.Dockerfile .
 
           - name: ⏩ Push ARM64 image
             run: |
-              docker push ghcr.io/software-mansion/smelter:${{ github.sha }}
-              echo "ARM64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/software-mansion/smelter:${{ github.sha }})" >> "$GITHUB_ENV"
+              docker push ghcr.io/noituri/smelter:${{ github.sha }}
+              echo "ARM64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/noituri/smelter:${{ github.sha }})" >> "$GITHUB_ENV"
 
           - name: 🔗 Merge AMD64 and ARM64 images
             run: |
-              docker manifest create ghcr.io/software-mansion/smelter:${{ github.sha }} ${{ env.AMD64_IMAGE_ID }} ${{ env.ARM64_IMAGE_ID }}
-              docker manifest annotate ghcr.io/software-mansion/smelter:${{ github.sha }} ${{ env.AMD64_IMAGE_ID }} --arch amd64
-              docker manifest annotate ghcr.io/software-mansion/smelter:${{ github.sha }} ${{ env.ARM64_IMAGE_ID }} --arch arm64
+              docker manifest create ghcr.io/noituri/smelter:${{ github.sha }} ${{ env.AMD64_IMAGE_ID }} ${{ env.ARM64_IMAGE_ID }}
+              docker manifest annotate ghcr.io/noituri/smelter:${{ github.sha }} ${{ env.AMD64_IMAGE_ID }} --arch amd64
+              docker manifest annotate ghcr.io/noituri/smelter:${{ github.sha }} ${{ env.ARM64_IMAGE_ID }} --arch arm64
 
           - name: 📤  Upload image
-            run: docker manifest push ghcr.io/software-mansion/smelter:${{ github.sha }}
+            run: docker manifest push ghcr.io/noituri/smelter:${{ github.sha }}
 
     docker-with-web-renderer-amd64:
       runs-on: ubuntu-latest
@@ -164,10 +164,10 @@ jobs:
 
           - name: 🔨 Build Smelter with Web Renderer image
             run: |
-              docker buildx build --platform linux/amd64 -t ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer -f build_tools/docker/full.Dockerfile .
+              docker buildx build --platform linux/amd64 -t ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer -f build_tools/docker/full.Dockerfile .
 
           - name: 📤  Upload image
-            run: docker push ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer
+            run: docker push ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer
 
     docker-with-web-renderer-arm64:
       needs: docker-with-web-renderer-amd64
@@ -182,23 +182,23 @@ jobs:
 
           - name: 🎣 Pull Smleter AMD64 image
             run: |
-              docker pull ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer
-              echo "AMD64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer)" >> "$GITHUB_ENV"
+              docker pull ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer
+              echo "AMD64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer)" >> "$GITHUB_ENV"
 
           - name: 🔨 Build Smelter ARM64 image
             run: |
-              docker buildx build --platform linux/arm64 -t ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer -f build_tools/docker/full.Dockerfile .
+              docker buildx build --platform linux/arm64 -t ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer -f build_tools/docker/full.Dockerfile .
 
           - name: ⏩ Push ARM64 image
             run: |
-              docker push ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer
-              echo "ARM64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer)" >> "$GITHUB_ENV"
+              docker push ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer
+              echo "ARM64_IMAGE_ID=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer)" >> "$GITHUB_ENV"
 
           - name: 🔗 Merge AMD64 and ARM64 images
             run: |
-              docker manifest create ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer ${{ env.AMD64_IMAGE_ID }} ${{ env.ARM64_IMAGE_ID }}
-              docker manifest annotate ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer ${{ env.AMD64_IMAGE_ID }} --arch amd64
-              docker manifest annotate ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer ${{ env.ARM64_IMAGE_ID }} --arch arm64
+              docker manifest create ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer ${{ env.AMD64_IMAGE_ID }} ${{ env.ARM64_IMAGE_ID }}
+              docker manifest annotate ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer ${{ env.AMD64_IMAGE_ID }} --arch amd64
+              docker manifest annotate ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer ${{ env.ARM64_IMAGE_ID }} --arch arm64
 
           - name: 📤  Upload image
-            run: docker manifest push ghcr.io/software-mansion/smelter:${{ github.sha }}-web-renderer
+            run: docker manifest push ghcr.io/noituri/smelter:${{ github.sha }}-web-renderer
