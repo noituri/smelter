@@ -1,6 +1,7 @@
 name: Rust - gpu tests
 on:
     # TODO: run only if vk-video code changed
+    # TODO: what happens if 2 workers are spawned at the same time?
     workflow_dispatch: {}
     push:
         branches: [master]
@@ -23,7 +24,6 @@ jobs:
                   sudo apt-get clean
                   sudo rm -rf /var/lib/apt/lists/*
 
-              # TODO: emoji
             - name: ℹ️ GPU info
               run: vulkaninfo
               
