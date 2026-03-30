@@ -24,10 +24,8 @@ jobs:
                   sudo rm -rf /var/lib/apt/lists/*
 
               # TODO: emoji
-            - name: 🪢 GPU info
-              run: |
-                  vulkaninfo
-                  ls -la /dev/dri
+            - name: ℹ️ GPU info
+              run: vulkaninfo
               
             - name: 🔧 Install the rust toolchain
               uses: dtolnay/rust-toolchain@stable
