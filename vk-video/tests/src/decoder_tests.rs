@@ -2,6 +2,7 @@
 // - changing resolution low -> high -> low
 // - b frames
 // - missed frame
+// - that one video with artifacts in middle of it
 // - what about h264 which crashes the machine?
 // - separate tests for bytes and textures decoder
 
