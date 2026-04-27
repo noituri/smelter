@@ -32,27 +32,16 @@ jobs:
               with:
                   toolchain: 1.94
 
-            - name: 🔬 Install nextest
-              uses: taiki-e/install-action@v2
-              with:
-                  tool: cargo-nextest
-
             - name: 📥 Checkout repo
               uses: actions/checkout@v4
-
-            - name: 🧩 Git submodules update
-              run: |
-                  cat > .gitmodules << EOF
-                  [submodule "snapshots"]
-                          path = integration-tests/snapshots
-                          url = https://github.com/smelter-labs/smelter-snapshot-tests.git
-                  EOF
-                  git submodule update --init
 
             - name: 📁 Rust cache
               uses: Swatinem/rust-cache@v2
               with:
                   shared-key: "linux-build"
+
+            - name: ℹ️ vk-video
+              run: cargo run --package vk-video --example encode_wgpu 1280 720 30
 
             - name: 📦 Upload failed snapshot test artifacts
               if: failure()
